@@ -12,7 +12,8 @@ type Button struct {
 	_colorMap
 	_sizeMap
 
-	IsFullwidth bool
+	Markup   vecty.MarkupList
+	Children vecty.ComponentOrHTML
 }
 
 func (t *Button) Render() vecty.ComponentOrHTML {
@@ -42,10 +43,11 @@ func (t *Button) Render() vecty.ComponentOrHTML {
 				Color.IsBlack: t.IsBlack,
 				Color.IsText:  t.IsText,
 
-				Size.IsSmall:  t.IsSmall,
-				Size.IsMedium: t.IsMedium,
-				Size.IsLarge:  t.IsLarge,
-				Size.IsNormal: t.IsNormal,
+				Size.IsSmall:     t.IsSmall,
+				Size.IsMedium:    t.IsMedium,
+				Size.IsLarge:     t.IsLarge,
+				Size.IsNormal:    t.IsNormal,
+				Size.IsFullwidth: t.IsFullwidth,
 			},
 		),
 	)

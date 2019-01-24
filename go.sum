@@ -1,0 +1,4 @@
+github.com/gopherjs/gopherjs v0.0.0-20181103185306-d547d1d9531e h1:JKmoR8x90Iww1ks85zJ1lfDGgIiMDuIptTOhJq+zKyg=
+github.com/gopherjs/gopherjs v0.0.0-20181103185306-d547d1d9531e/go.mod h1:wJfORRmW1u3UXTncJ5qlYoELFm8eSnnEO6hX4iZ3EWY=
+github.com/gopherjs/vecty v0.0.0-20180525005238-a3bd138280bf h1:J7WjKCdpxMhXDzFPP6d41YonnCnPi1JkYOFxIPoH1E0=
+github.com/gopherjs/vecty v0.0.0-20180525005238-a3bd138280bf/go.mod h1:5YRDuy7i7SgM0kL+0b5oq+jfDTqPyzV3TQbcDkBvcoE=

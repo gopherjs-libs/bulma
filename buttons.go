@@ -5,28 +5,23 @@ import (
 	"github.com/gopherjs/vecty/elem"
 )
 
-type Buttons struct {
-	vecty.Core
-
+type ButtonsModel struct {
 	AreSmall  bool
 	AreMedium bool
 	AreLarge  bool
+}
 
-	Markup   vecty.MarkupList
-	Children vecty.ComponentOrHTML
+type Buttons struct {
+	vecty.Core
+	Size string
+
+	Markup vecty.MarkupList
+	Slot   vecty.List
 }
 
 func (t *Buttons) Render() vecty.ComponentOrHTML {
-	return elem.Div(
-		vecty.Markup(
-			vecty.Class("buttons"),
-			vecty.ClassMap{
-				"are-small":  t.AreSmall,
-				"are-medium": t.AreMedium,
-				"are-large":  t.AreLarge,
-			},
-		),
-		t.Markup,
-		t.Children,
-	)
+	return elem.Div(vecty.Markup(
+		vecty.Class("buttons"),
+		ClassMap(t.Size),
+	), t.Markup, t.Slot)
 }

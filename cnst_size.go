@@ -1,25 +1,21 @@
 package bulma
 
-type _sizeMap struct {
-	IsSmall     bool
-	IsMedium    bool
-	IsLarge     bool
-	IsNormal    bool
-	IsFullwidth bool
-}
-
-type _size struct {
+var Size = struct {
 	IsSmall     string
 	IsMedium    string
 	IsLarge     string
 	IsNormal    string
 	IsFullwidth string
-}
-
-var Size = _size{
+	AreSmall    string
+	AreMedium   string
+	AreLarge    string
+}{
 	IsSmall:     "is-small",
 	IsMedium:    "is-medium",
 	IsLarge:     "is-large",
 	IsNormal:    "is-normal",
 	IsFullwidth: "is-fullwidth",
+	AreSmall:    "are-small",
+	AreMedium:   "are-medium",
+	AreLarge:    "are-large",
 }

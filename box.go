@@ -7,12 +7,11 @@ import (
 
 type Box struct {
 	vecty.Core
+	Slot vecty.List
 }
 
-func (*Box) Render() vecty.ComponentOrHTML {
-	return elem.Div(
-		vecty.Markup(
-			vecty.Class("box"),
-		),
-	)
+func (t *Box) Render() vecty.ComponentOrHTML {
+	return elem.Div(vecty.Markup(
+		vecty.Class("box"),
+	), t.Slot)
 }

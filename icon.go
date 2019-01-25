@@ -5,70 +5,72 @@ import (
 	"github.com/gopherjs/vecty/elem"
 )
 
-type IconSize struct {
-	IsSmall  bool
-	IsMedium bool
-	IsLarge  bool
+var IconSize = struct {
+	IsSmall  string
+	IsMedium string
+	IsLarge  string
+}{
+	IsSmall:  "is-small",
+	IsMedium: "is-medium",
+	IsLarge:  "is-large",
 }
 
-type IconColors struct {
-	HasTextInfo    bool
-	HasTextSuccess bool
-	HasTextWarning bool
-	HasTextDanger  bool
+var IconColors = struct {
+	HasTextInfo    string
+	HasTextSuccess string
+	HasTextWarning string
+	HasTextDanger  string
+}{
+	HasTextInfo:    "has-text-info",
+	HasTextSuccess: "has-text-success",
+	HasTextWarning: "has-text-warning",
+	HasTextDanger:  "has-text-danger",
 }
 
 type I struct {
 	vecty.Core
 
-	Class  []string
-	Colors IconColors
+	Value string
+	Size  string
+	Color string
 }
 
 func (t *I) Render() vecty.ComponentOrHTML {
-	_css := vecty.ClassMap{
-		"has-text-info":    t.Colors.HasTextInfo,
-		"has-text-success": t.Colors.HasTextSuccess,
-		"has-text-warning": t.Colors.HasTextWarning,
-		"has-text-danger":  t.Colors.HasTextDanger,
-	}
-
-	for _, _c := range t.Class {
-		_css[_c] = true
-	}
-
-	return elem.Span(
-		vecty.Markup(
-			vecty.Class("icon"),
-			_css,
-		),
-	)
+	return elem.Span(vecty.Markup(vecty.Class("fas"), ClassMap(t.Size, t.Color,t.Value)))
 }
 
 type Icon struct {
 	vecty.Core
 
-	Colors   IconColors
-	Size     IconSize
-	Markup   vecty.MarkupList
-	Children vecty.ComponentOrHTML
+	Size     string
+	Color    string
+	Slot vecty.ComponentOrHTML
 }
 
 func (t *Icon) Render() vecty.ComponentOrHTML {
 	return elem.Span(
 		vecty.Markup(
 			vecty.Class("icon"),
-			vecty.ClassMap{
-				"has-text-info":    t.Colors.HasTextInfo,
-				"has-text-success": t.Colors.HasTextSuccess,
-				"has-text-warning": t.Colors.HasTextWarning,
-				"has-text-danger":  t.Colors.HasTextDanger,
-				"is-small":         t.Size.IsSmall,
-				"is-medium":        t.Size.IsMedium,
-				"is-large":         t.Size.IsLarge,
-			},
+			ClassMap(t.Size, t.Color),
 		),
-		t.Markup,
-		t.Children,
+		t.Slot,
+	)
+}
+
+type IconStacked struct {
+	vecty.Core
+
+	Size  string
+	Color string
+	Slot  vecty.ComponentOrHTML
+}
+
+func (t *IconStacked) Render() vecty.ComponentOrHTML {
+	return elem.Span(
+		vecty.Markup(
+			vecty.Class("fa-stack"),
+			ClassMap(t.Size, t.Color),
+		),
+		t.Slot,
 	)
 }

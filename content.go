@@ -42,7 +42,5 @@ func (t *Content) Render() vecty.ComponentOrHTML {
 	return elem.Div(
 		vecty.Markup(
 			vecty.Class("content"),
-		),
-		t.Markup, t.Slot,
-	)
+		), t.Markup, t.Slot)
 }

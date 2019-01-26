@@ -7,19 +7,7 @@ import (
 	"github.com/gopherjs/vecty/event"
 )
 
-var TableModifier = struct {
-	IsBordered  string
-	IsStriped   string
-	IsNarrow    string
-	IsHoverable string
-	IsFullwidth string
-}{
-	IsBordered:  "is-bordered",
-	IsStriped:   "is-striped",
-	IsNarrow:    "is-narrow",
-	IsHoverable: "is-hoverable",
-	IsFullwidth: "is-fullwidth",
-}
+
 
 type Table struct {
 	vecty.Core
@@ -28,7 +16,7 @@ type Table struct {
 
 	Header      []TableHeader
 	headerMap   []string
-	Body        []map[string]vecty.ComponentOrHTML
+	Body        []MapComponent
 	selectedNum int
 	Modifier    string
 }
@@ -87,10 +75,6 @@ type TableRow struct {
 	Markup     vecty.MarkupList
 	Slot       vecty.List
 	OnClick    func(int)
-}
-
-func (t *TableHeader) onSort(title string) {
-	fmt.Println(title)
 }
 
 func (t *TableRow) onClick(e *vecty.Event) {

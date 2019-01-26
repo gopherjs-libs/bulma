@@ -15,11 +15,8 @@ type Notification struct {
 }
 
 func (t *Notification) Render() vecty.ComponentOrHTML {
-	return elem.Div(
-		vecty.Markup(
-			vecty.Class("notification"),
-			ClassMap(t.Color),
-		),
+	return elem.Div(vecty.Markup(vecty.Class("notification"),
+		ClassMap(t.Color)),
 		&Delete{OnClick: t.OnClick},
 		vecty.Text(t.Value))
 }

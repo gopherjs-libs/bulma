@@ -5,13 +5,23 @@ import (
 	"github.com/gopherjs/vecty/elem"
 )
 
+func SimpleBox(style ...vecty.Applyer) func(c ...vecty.ComponentOrHTML) vecty.ComponentOrHTML {
+	return func(c ...vecty.ComponentOrHTML) vecty.ComponentOrHTML {
+		return elem.Div(vecty.Markup(vecty.Class("box")),
+			vecty.Markup(style...),
+			Components(c...))
+	}
+}
+
 type Box struct {
 	vecty.Core
-	Slot vecty.List
+
+	Markup vecty.MarkupList
+	Slot   vecty.List
 }
 
 func (t *Box) Render() vecty.ComponentOrHTML {
-	return elem.Div(vecty.Markup(
-		vecty.Class("box"),
-	), t.Slot)
+	return elem.Div(vecty.Markup(vecty.Class("box")),
+		t.Markup,
+		t.Slot)
 }

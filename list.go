@@ -5,22 +5,18 @@ import (
 	"github.com/gopherjs/vecty/elem"
 )
 
-type List struct {
-	vecty.Core
-
-	IsOrder bool
-	State   string
-	Type    string
-	Size    string
-
-	Markup vecty.MarkupList
-	Slot   vecty.List
+func OrderedList(l vecty.ClassMap, applyer ...vecty.Applyer) func(c ...vecty.ComponentOrHTML) vecty.ComponentOrHTML {
+	return func(c ...vecty.ComponentOrHTML) vecty.ComponentOrHTML {
+		return elem.OrderedList(vecty.Markup(append(applyer, l)...), Components(c...))
+	}
 }
 
-func (t *List) Render() vecty.ComponentOrHTML {
-	_l := EleIf(t.IsOrder, elem.OrderedList, elem.UnorderedList)
-	return _l(vecty.Markup(
-		vecty.MarkupIf(t.Type != "", vecty.Attribute("type", t.Type)),
-		ClassMap(t.Size, t.State),
-	), t.Markup, t.Slot)
+func UnorderedList(l vecty.ClassMap, applyer ...vecty.Applyer) func(c ...vecty.ComponentOrHTML) vecty.ComponentOrHTML {
+	return func(c ...vecty.ComponentOrHTML) vecty.ComponentOrHTML {
+		return elem.UnorderedList(vecty.Markup(append(applyer, l)...), Components(c...))
+	}
+}
+
+func ListItem(c ...vecty.ComponentOrHTML) vecty.ComponentOrHTML {
+	return elem.ListItem(Components(c...))
 }

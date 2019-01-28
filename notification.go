@@ -5,18 +5,10 @@ import (
 	"github.com/gopherjs/vecty/elem"
 )
 
-type Notification struct {
-	vecty.Core
-
-	Color string
-
-	OnClick EventHandle
-	Value   string
-}
-
-func (t *Notification) Render() vecty.ComponentOrHTML {
-	return elem.Div(vecty.Markup(vecty.Class("notification"),
-		ClassMap(t.Color)),
-		&Delete{OnClick: t.OnClick},
-		vecty.Text(t.Value))
+func Notification(css vecty.ClassMap, applyer ...vecty.Applyer) func(c ...vecty.ComponentOrHTML) vecty.ComponentOrHTML {
+	return func(c ...vecty.ComponentOrHTML) vecty.ComponentOrHTML {
+		return elem.Div(vecty.Markup(vecty.Class("notification"), css),
+			Del(applyer...),
+			Components(c...))
+	}
 }

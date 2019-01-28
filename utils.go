@@ -13,6 +13,10 @@ func Str(c ...string) []string {
 	return c
 }
 
+func Css(m ...string) vecty.ClassMap {
+	return ClassMap(m...)
+}
+
 func ClassMap(m ...string) vecty.ClassMap {
 	_css := vecty.ClassMap{}
 	for _, i := range m {

@@ -3,71 +3,56 @@ package bulma
 import (
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
-	"github.com/gopherjs/vecty/event"
 )
 
-type Button struct {
-	vecty.Core
-
-	Size    []string
-	Color   string
-	State   string
-	Style   []string
-	Slot    vecty.List
-	OnClick EventHandle
-	Markup  vecty.MarkupList
-}
-
-func (t *Button) Render() vecty.ComponentOrHTML {
-	t.Style = append(t.Style, t.Size...)
-	t.Style = append(t.Style, t.Color, t.State)
-
-	return elem.Anchor(vecty.Markup(vecty.Class("button"),
-		ClassMap(t.Style...),
-		vecty.MarkupIf(t.OnClick != nil, event.Click(t.OnClick))),
-		t.Slot,
-		t.Markup)
-}
-
-type Buttons struct {
-	vecty.Core
-	Size string
-
-	Markup vecty.MarkupList
-	Slot   vecty.List
-}
-
-func (t *Buttons) Render() vecty.ComponentOrHTML {
-	return elem.Div(vecty.Markup(vecty.Class("buttons"),
-		ClassMap(t.Size)),
-		t.Markup,
-		t.Slot)
-}
-
-func SimpleButtons(style ...string) func(c ...vecty.ComponentOrHTML) vecty.ComponentOrHTML {
+func Buttons(style ...vecty.Applyer) func(c ...vecty.ComponentOrHTML) vecty.ComponentOrHTML {
 	return func(c ...vecty.ComponentOrHTML) vecty.ComponentOrHTML {
 		return elem.Div(vecty.Markup(vecty.Class("buttons"),
-			ClassMap(style...)),
+			vecty.Markup(style...)),
 			Components(c...))
 	}
 }
 
-func SimpleButton(style ...string) func(c ...vecty.ComponentOrHTML) vecty.ComponentOrHTML {
+func Btns(l vecty.ClassMap, style ...vecty.Applyer) func(c ...vecty.ComponentOrHTML) vecty.ComponentOrHTML {
+	return Buttons(vecty.Markup(append(style, l)...))
+}
+
+func SButtons(style ...string) func(c ...vecty.ComponentOrHTML) vecty.ComponentOrHTML {
+	return Buttons(vecty.Class(style...))
+}
+
+func Button(style ...vecty.Applyer) func(c ...vecty.ComponentOrHTML) vecty.ComponentOrHTML {
 	return func(c ...vecty.ComponentOrHTML) vecty.ComponentOrHTML {
-		return elem.Anchor(vecty.Markup(vecty.Class("button"),
-			ClassMap(style...)),
+		return elem.Anchor(vecty.Markup(append(style, vecty.Class("button"))...),
 			Components(c...),
 		)
 	}
 }
+func Btn(l vecty.ClassMap, style ...vecty.Applyer) func(c ...vecty.ComponentOrHTML) vecty.ComponentOrHTML {
+	return Button(vecty.Markup(append(style, l)...))
+}
 
-func AttachButtons(alignment ...string) func(ps ...vecty.ComponentOrHTML) vecty.ComponentOrHTML {
-	return func(ps ...vecty.ComponentOrHTML) vecty.ComponentOrHTML {
-		return &Buttons{
-			Slot:   Components(ps...),
-			Markup: vecty.Markup(ClassMap(append(alignment, "has-addons")...)),
+func SButton(style ...string) func(c ...vecty.ComponentOrHTML) vecty.ComponentOrHTML {
+	return Button(vecty.Class(style...))
+}
+
+func IconButton(l vecty.ClassMap, style ...vecty.Applyer) func(c ...interface{}) vecty.ComponentOrHTML {
+	return func(c ...interface{}) vecty.ComponentOrHTML {
+		var _p []vecty.ComponentOrHTML
+		for _, _c := range c {
+			switch _i := _c.(type) {
+			case *vecty.HTML:
+				_p = append(_p, _i)
+			case string:
+				_p = append(_p, elem.Span(vecty.Text(_i)))
+			}
 		}
+		return Btn(l, style...)(_p...)
 	}
+}
+
+func AlignmentButton(l vecty.ClassMap, style ...vecty.Applyer) func(ps ...vecty.ComponentOrHTML) vecty.ComponentOrHTML {
+	return Btns(l, vecty.Markup(append(style, vecty.Class("has-addons"))...))
 }
 
 func GroupButton(ps ...vecty.ComponentOrHTML) vecty.ComponentOrHTML {
@@ -77,7 +62,7 @@ func GroupButton(ps ...vecty.ComponentOrHTML) vecty.ComponentOrHTML {
 	}))
 }
 
-func AddonsButtons(ps ...vecty.ComponentOrHTML) vecty.ComponentOrHTML {
+func AddonsButton(ps ...vecty.ComponentOrHTML) vecty.ComponentOrHTML {
 	return elem.Div(vecty.Markup(vecty.Class("field", "has-addons"),
 	), MapElem(ps, func(c vecty.ComponentOrHTML) vecty.ComponentOrHTML {
 		return elem.Paragraph(vecty.Markup(vecty.Class("control")), c)

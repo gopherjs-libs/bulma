@@ -2,23 +2,16 @@ package bulma
 
 import (
 	"github.com/gopherjs/vecty"
-	"github.com/gopherjs/vecty/elem"
 )
 
 func Tag(css vecty.ClassMap, applyer ...vecty.Applyer) func(c ...vecty.ComponentOrHTML) vecty.ComponentOrHTML {
 	return func(c ...vecty.ComponentOrHTML) vecty.ComponentOrHTML {
-		return elem.Span(
-			vecty.Markup(vecty.Class("tag"), css),
-			vecty.Markup(applyer...),
-			Components(c...))
+		return &TagComponent{css: css, Markup: vecty.Markup(applyer...), Slot: vecty.List(c)}
 	}
 }
 
 func Tags(css vecty.ClassMap, applyer ...vecty.Applyer) func(c ...vecty.ComponentOrHTML) vecty.ComponentOrHTML {
 	return func(c ...vecty.ComponentOrHTML) vecty.ComponentOrHTML {
-		return elem.Span(
-			vecty.Markup(vecty.Class("tags"), css),
-			vecty.Markup(applyer...),
-			Components(c...))
+		return &TagsComponent{css: css, Markup: vecty.Markup(applyer...), Slot: vecty.List(c)}
 	}
 }

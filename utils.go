@@ -3,6 +3,7 @@ package bulma
 import (
 	"fmt"
 	"github.com/gopherjs/vecty"
+	"strings"
 )
 
 func Components(c ...vecty.ComponentOrHTML) (l vecty.List) {
@@ -24,7 +25,9 @@ func ClassMap(m ...string) vecty.ClassMap {
 			continue
 		}
 
-		_css[i] = true
+		for _, _s := range strings.Split(i, " ") {
+			_css[_s] = true
+		}
 
 	}
 	return _css

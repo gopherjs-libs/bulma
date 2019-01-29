@@ -5,7 +5,6 @@ import (
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/event"
-	"github.com/gopherjs/vecty/prop"
 	. "github.com/kooksee/bulma"
 	"github.com/kooksee/bulma/attrs"
 	"github.com/kooksee/bulma/vars"
@@ -16,6 +15,7 @@ func main() {
 	vecty.RenderBody(&MainView{
 		isShow:    true,
 		isTagShow: true,
+		isDown:    false,
 	})
 }
 
@@ -24,13 +24,18 @@ type MainView struct {
 	vecty.Core
 	isShow    bool
 	isTagShow bool
+	isDown    bool
+}
+
+func (pv *MainView) Mount() {
+	fmt.Println("Mount")
 }
 
 func (pv *MainView) Render() vecty.ComponentOrHTML {
-
+	fmt.Println("111111")
 	return elem.Body(
-		Box()(
-			article()),
+		Box()(Text("SButton")),
+
 
 		SButtons(vars.AreSmall)(
 			SButton()(
@@ -45,54 +50,58 @@ func (pv *MainView) Render() vecty.ComponentOrHTML {
 				Text("SButton"))),
 
 		SButtons(vars.AreLarge)(
-			SButton()(vecty.Text("SButton")),
-			SButton(vars.IsWhite)(vecty.Text("SButton")),
-			SButton(vars.IsDanger)(vecty.Text("SButton")),
-			SButton(vars.IsDark)(vecty.Text("SButton")),
-			SButton(vars.IsPrimary)(vecty.Text("SButton"))),
+			SButton()(Text("SButton")),
+			SButton(vars.IsWhite)(Text("SButton")),
+			SButton(vars.IsDanger)(Text("SButton")),
+			SButton(vars.IsDark)(Text("SButton")),
+			SButton(vars.IsPrimary)(Text("SButton"))),
 
 		SButton(vars.IsInfo, vars.IsInverted)(
-			vecty.Text("SButton")),
+			Text("SButton")),
 
 		SButton(vars.IsRounded, vars.IsDanger)(
-			vecty.Text("SButton")),
+			Text("SButton")),
 
 		GroupButton(
 			SButton(vars.IsRounded, vars.IsDanger)(
-				vecty.Text("SButton")),
+				Text("SButton")),
 			SButton(vars.IsRounded, vars.IsDark)(
-				vecty.Text("SButton")),
-		),
+				Text("SButton"))),
 
 		AddonsButton(
 			Btn(Css(vars.IsLoading))(
-				vecty.Text("SButton")),
+				Text("SButton")),
 			Btn(Css(vars.IsRounded, vars.IsDark, vars.IsStatic))(
-				vecty.Text("SButton"))),
+				Text("SButton"))),
+
+		Icon(Css(vars.IsSmall))(I("fa-bold")),
+
+		IconButton(Css())(
+			Icon(Css(vars.IsSmall))(I("fa-bold")),
+			Text("Bold")),
 
 		AddonsButton(
 			IconButton(Css())(
 				Icon(Css(vars.IsSmall))(I("fa-bold")),
-				"Bold"),
+				Text("Bold")),
 			IconButton(Css())(
 				Icon(Css(vars.IsSmall))(I("fa-italic")),
-				"Italic"),
+				Text("Italic")),
 			IconButton(Css())(
 				Icon(Css(vars.IsSmall))(I("fa-underline")),
-				"Underline"),
+				Text("Underline")),
 		),
 
 		AlignmentButton(Css(vars.IsCentered))(
 			IconButton(Css())(
 				Icon(Css(vars.IsSmall))(I("fa-bold")),
-				"Bold"),
+				Text("Bold")),
 			IconButton(Css())(
 				Icon(Css(vars.IsSmall))(I("fa-italic")),
-				"Italic"),
+				Text("Italic")),
 			IconButton(Css(vars.IsDanger, vars.IsSelected))(
 				Icon(Css(vars.IsSmall))(I("fa-underline")),
-				"Underline"),
-		),
+				Text("Underline"))),
 
 		Cnt(Css())(
 			OrderedList(Css())(
@@ -119,8 +128,8 @@ func (pv *MainView) Render() vecty.ComponentOrHTML {
 			Del(),
 		),
 
-		//Image(Css("is-128x128"))("https://bulma.io/images/placeholders/128x128.png"),
-		//RoundedImage(Css("is-128x128"))("https://bulma.io/images/placeholders/128x128.png"),
+		Image(Css("is-128x128"))("https://bulma.io/images/placeholders/128x128.png"),
+		RoundedImage(Css("is-128x128"))("https://bulma.io/images/placeholders/128x128.png"),
 
 		vecty.If(pv.isShow, Notification(Css(vars.IsInfo), event.Click(func(i *vecty.Event) {
 			pv.isShow = false
@@ -178,130 +187,27 @@ func (pv *MainView) Render() vecty.ComponentOrHTML {
 		Table(Css("is-fullwidth"))(
 			THead(Th(Abbr("Position")), Th(Abbr("Played")), Th(Abbr("Team"))),
 			TFoot(Th(Abbr("Position")), Th(Abbr("Played")), Th(Abbr("Team"))),
-			TBody(TR(
+			TBody(TR(Css())(
 				Th(Text("1")),
 				Td(Text("2")),
 				Td(Text("3")),
-			), TR(
+			), TR(Css(vars.IsSelected))(
 				Th(Text("1")),
 				Td(Text("2")),
 				Td(Text("3")),
-			), TR(
+			), TR(Css())(
 				Th(Text("1")),
 				Td(Text("2")),
 				Td(A(Css(),
 					attrs.Href("https://en.wikipedia.org/wiki/Manchester_United_F.C."),
 					attrs.Title("Manchester United F.C."),
-				)(vecty.Text("test"))),
+				)(Text("test"))),
 			)),
 		),
-	)
-}
 
-func article() vecty.ComponentOrHTML {
-	return elem.Article(
-		vecty.Markup(
-			vecty.Class("media"),
-		),
-		elem.Div(
-			vecty.Markup(
-				vecty.Class("media-left"),
-			),
-			elem.Figure(
-				vecty.Markup(
-					vecty.Class("image", "is-64x64"),
-				),
-				elem.Image(
-					vecty.Markup(
-						prop.Src("https://bulma.io/images/placeholders/128x128.png"),
-						vecty.Attribute("alt", "Image"),
-					),
-				),
-			),
-		),
-		elem.Div(
-			vecty.Markup(
-				vecty.Class("media-content"),
-			),
-			elem.Div(
-				vecty.Markup(
-					vecty.Class("content"),
-				),
-				elem.Paragraph(
-					elem.Strong(
-						vecty.Text("John Smith"),
-					),
-					elem.Small(
-						vecty.Text("@johnsmith"),
-					),
-					elem.Small(
-						vecty.Text("31m"),
-					),
-					elem.Break(),
-					vecty.Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur sit amet massa fringilla egestas. Nullam condimentum luctus turpis."),
-				),
-			),
-			elem.Navigation(
-				vecty.Markup(
-					vecty.Class("level", "is-mobile"),
-				),
-				elem.Div(
-					vecty.Markup(
-						vecty.Class("level-left"),
-					),
-					elem.Anchor(
-						vecty.Markup(
-							vecty.Class("level-item"),
-							vecty.Attribute("aria-label", "reply"),
-						),
-						elem.Span(
-							vecty.Markup(
-								vecty.Class("icon", "is-small"),
-							),
-							elem.Italic(
-								vecty.Markup(
-									vecty.Class("fas", "fa-reply"),
-									vecty.Attribute("aria-hidden", "true"),
-								),
-							),
-						),
-					),
-					elem.Anchor(
-						vecty.Markup(
-							vecty.Class("level-item"),
-							vecty.Attribute("aria-label", "retweet"),
-						),
-						elem.Span(
-							vecty.Markup(
-								vecty.Class("icon", "is-small"),
-							),
-							elem.Italic(
-								vecty.Markup(
-									vecty.Class("fas", "fa-retweet"),
-									vecty.Attribute("aria-hidden", "true"),
-								),
-							),
-						),
-					),
-					elem.Anchor(
-						vecty.Markup(
-							vecty.Class("level-item"),
-							vecty.Attribute("aria-label", "like"),
-						),
-						elem.Span(
-							vecty.Markup(
-								vecty.Class("icon", "is-small"),
-							),
-							elem.Italic(
-								vecty.Markup(
-									vecty.Class("fas", "fa-heart"),
-									vecty.Attribute("aria-hidden", "true"),
-								),
-							),
-						),
-					),
-				),
-			),
-		),
+		elem.Button(vecty.Markup(event.Click(func(i *vecty.Event) {
+			fmt.Println("Button Click")
+			vecty.Rerender(pv)
+		}), vecty.Class(vars.IsInfo, "button")), vecty.Text("测试")),
 	)
 }

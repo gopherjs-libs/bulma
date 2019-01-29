@@ -79,3 +79,5 @@ const IsHoverable = "is-hoverable"
 
 const IsDelete = "is-delete"
 const HasAddons = "has-addons"
+
+const Breadcrumbs = "breadcrumbs"

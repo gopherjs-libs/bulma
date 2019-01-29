@@ -17,3 +17,15 @@ func Value(s string) vecty.Applyer {
 func Max(s string) vecty.Applyer {
 	return vecty.Attribute("max", s)
 }
+
+func AriaLabel(s string) vecty.Applyer {
+	return vecty.Attribute("aria-label", s)
+}
+
+func AriaCurrent(s string) vecty.Applyer {
+	return vecty.Attribute("aria-current", s)
+}
+
+func AriaHidden(s string) vecty.Applyer {
+	return vecty.Attribute("aria-hidden", s)
+}

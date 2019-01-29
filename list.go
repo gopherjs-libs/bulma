@@ -2,21 +2,20 @@ package bulma
 
 import (
 	"github.com/gopherjs/vecty"
-	"github.com/gopherjs/vecty/elem"
 )
 
 func OrderedList(l vecty.ClassMap, applyer ...vecty.Applyer) func(c ...vecty.ComponentOrHTML) vecty.ComponentOrHTML {
 	return func(c ...vecty.ComponentOrHTML) vecty.ComponentOrHTML {
-		return elem.OrderedList(vecty.Markup(append(applyer, l)...), Components(c...))
+		return &OrderedListComponent{Markup: vecty.Markup(append(applyer, l)...), Slot: c}
 	}
 }
 
 func UnorderedList(l vecty.ClassMap, applyer ...vecty.Applyer) func(c ...vecty.ComponentOrHTML) vecty.ComponentOrHTML {
 	return func(c ...vecty.ComponentOrHTML) vecty.ComponentOrHTML {
-		return elem.UnorderedList(vecty.Markup(append(applyer, l)...), Components(c...))
+		return &UnorderedListComponent{Markup: vecty.Markup(append(applyer, l)...), Slot: c}
 	}
 }
 
 func ListItem(c ...vecty.ComponentOrHTML) vecty.ComponentOrHTML {
-	return elem.ListItem(Components(c...))
+	return &ListItemComponent{Slot: c}
 }

@@ -33,6 +33,38 @@ func (pv *MainView) Mount() {
 
 func (pv *MainView) Render() vecty.ComponentOrHTML {
 	fmt.Println("111111")
+	t1 := &TableComponent{
+		Markup: vecty.Markup(Css("is-fullwidth")),
+		Header: [][]string{{"a1", "Position"}, {"a2", "Played"}, {"Team"}},
+		Body:   []map[string]interface{}{{"a1": 1, "a2": 21, "a3": 32}, {"a1": 2, "a2": 22, "a3": 31}, {"a1": 3, "a2": 23, "a3": 38}},
+	}
+	t1.HandleHeader(func(c []string) vecty.ComponentOrHTML {
+		_t := ""
+		_v := ""
+		if len(c) == 1 {
+			_v = c[0]
+		} else if len(c) == 2 {
+			_v = c[1]
+			_t = c[0]
+		}
+
+		return &ThComponent{
+			Slot: Components(If(_t != "", &AbbrComponent{
+				Markup: vecty.Markup(vecty.MarkupIf(_t != "", vecty.Attribute("title", _t))),
+				Slot:   Components(Text(_v)),
+			}), If(_t == "", &ThComponent{Slot: Components(Text(_v))})),
+		}
+	})
+	t1.HandleBody(func(k string, v interface{}) vecty.ComponentOrHTML {
+		if k == "a3" {
+			return Td(A(Css(),
+				attrs.Href("https://en.wikipedia.org/wiki/Manchester_United_F.C."),
+				attrs.Title("Manchester United F.C."),
+			)(Text("test")))
+		}
+		return Td(Text(fmt.Sprintf("%d", v)))
+	})
+
 	return elem.Body(
 		Box()(Text("SButton")),
 
@@ -183,11 +215,17 @@ func (pv *MainView) Render() vecty.ComponentOrHTML {
 			ListItem(Text("hello1")),
 			ListItem(Text("hello1")),
 			ListItem(Text("hello1"))),
+		//THead(Th(Abbr(Str("Position"))), Th(Abbr(Str("Played"))), Th(Abbr(Str("Team"))))
+		t1,
+		elem.Button(vecty.Markup(event.Click(func(i *vecty.Event) {
+			fmt.Println("Button Click")
+			vecty.Rerender(pv)
+		}), vecty.Class(vars.IsInfo, "button")), vecty.Text("测试")),
+	)
+}
 
-		Table(Css("is-fullwidth"))(
-			THead(Th(Abbr("Position")), Th(Abbr("Played")), Th(Abbr("Team"))),
-			TFoot(Th(Abbr("Position")), Th(Abbr("Played")), Th(Abbr("Team"))),
-			TBody(TR(Css())(
+/*
+TBody(TR(Css())(
 				Th(Text("1")),
 				Td(Text("2")),
 				Td(Text("3")),
@@ -202,12 +240,5 @@ func (pv *MainView) Render() vecty.ComponentOrHTML {
 					attrs.Href("https://en.wikipedia.org/wiki/Manchester_United_F.C."),
 					attrs.Title("Manchester United F.C."),
 				)(Text("test"))),
-			)),
-		),
-
-		elem.Button(vecty.Markup(event.Click(func(i *vecty.Event) {
-			fmt.Println("Button Click")
-			vecty.Rerender(pv)
-		}), vecty.Class(vars.IsInfo, "button")), vecty.Text("测试")),
-	)
-}
+			))
+ */

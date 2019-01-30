@@ -3,6 +3,7 @@ package bulma
 import (
 	"fmt"
 	"github.com/gopherjs/vecty"
+	"reflect"
 	"strings"
 )
 
@@ -48,16 +49,12 @@ type StrM map[string]string
 
 type M map[string]interface{}
 
-func (t M) Map(fn func(k string, v interface{}) vecty.ComponentOrHTML) MapComponent {
-	_dm := make(MapComponent)
+func (t M) Map(fn func(k string, v interface{}) vecty.ComponentOrHTML) vecty.List {
+	var _dm vecty.List
 	for k, v := range t {
-		_dm[k] = fn(k, v)
+		_dm = append(_dm, fn(k, v))
 	}
 	return _dm
-}
-
-func Kv(k, v string) StrM {
-	return StrM{k: v}
 }
 
 func init() {
@@ -65,14 +62,6 @@ func init() {
 }
 
 type MapComponent map[string]vecty.ComponentOrHTML
-
-func BodyMap(dm []M, fn func(m M) MapComponent) []MapComponent {
-	var _ds []MapComponent
-	for _, m := range dm {
-		_ds = append(_ds, fn(m))
-	}
-	return _ds
-}
 
 type ComponentFn func(style ...string) func(c ...vecty.ComponentOrHTML) vecty.ComponentOrHTML
 
@@ -82,4 +71,17 @@ func MapElem(cpt []vecty.ComponentOrHTML, fn func(c vecty.ComponentOrHTML) vecty
 		_cs = append(_cs, fn(_i))
 	}
 	return _cs
+}
+
+func Map(data interface{}, fn interface{}) (_l vecty.List) {
+	_d := reflect.ValueOf(data)
+	for i := 0; i < _d.Len(); i++ {
+		_dt := _d.Index(i)
+		if !_dt.IsValid() {
+			continue
+		}
+		_v := reflect.ValueOf(fn).Call([]reflect.Value{_d.Index(i)})
+		_l = append(_l, _v[0].Interface().(vecty.ComponentOrHTML))
+	}
+	return
 }

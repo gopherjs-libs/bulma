@@ -16,7 +16,6 @@ var jQuery = jquery.NewJQuery
 
 type TableComponent struct {
 	vecty.Core
-
 	SelectedNum int
 	Header      [][]string
 
@@ -25,11 +24,11 @@ type TableComponent struct {
 	_headerSorted []string
 	header        vecty.ComponentOrHTML
 	footer        vecty.ComponentOrHTML
-	body          vecty.ComponentOrHTML
 
 	Markup vecty.MarkupList
 	Slot   vecty.List
 
+	isSorted       bool
 	onHandleHeader func(hs []string) vecty.ComponentOrHTML
 	onHandleBody   func(k string, v interface{}) vecty.ComponentOrHTML
 }
@@ -53,9 +52,11 @@ func (t *TableComponent) Render() vecty.ComponentOrHTML {
 
 		if len(_hs) > 0 {
 			t.header = elem.TableHead(t.Markup, elem.TableRow(vecty.Markup(event.Click(func(i *vecty.Event) {
+				t.isSorted = !t.isSorted
+
 				if i.Target.Get("tagName").String() == "ABBR" {
 					name := i.Target.Get("title").String()
-					sort.Slice(t.body, func(i, j int) bool {
+					sort.Slice(t.Body, func(i, j int) bool {
 						a := t.Body[i][name]
 						b := t.Body[j][name]
 
@@ -68,11 +69,19 @@ func (t *TableComponent) Render() vecty.ComponentOrHTML {
 						}
 
 						if reflect.TypeOf(a).Kind() == reflect.String {
-							return strings.Compare(a.(string), b.(string)) > 0
+							if t.isSorted {
+								return strings.Compare(a.(string), b.(string)) > 0
+							} else {
+								return strings.Compare(a.(string), b.(string)) < 0
+							}
 						}
 
 						if reflect.TypeOf(a).Kind() == reflect.Int {
-							return a.(int) > b.(int)
+							if t.isSorted {
+								return a.(int) > b.(int)
+							} else {
+								return a.(int) < b.(int)
+							}
 						}
 
 						return true
@@ -86,7 +95,10 @@ func (t *TableComponent) Render() vecty.ComponentOrHTML {
 
 	if t.onHandleBody != nil {
 		var _bd vecty.List
+		fmt.Println(t.Body)
+
 		for _i, _tr := range t.Body {
+
 			var _td vecty.List
 			for k, v := range _tr {
 				_td = append(_td, t.onHandleBody(k, v))
@@ -96,11 +108,14 @@ func (t *TableComponent) Render() vecty.ComponentOrHTML {
 				t.SelectedNum = i.Target.Get("parentNode").Get("dataset").Get("k_num").Int()
 				vecty.Rerender(t)
 			})), _td))
+
+			fmt.Println(_tr)
 		}
-		t.body = _bd
+
+		return elem.Table(vecty.Markup(vecty.Class("table")), t.Markup, t.header, _bd, t.Slot)
 	}
 
-	return elem.Table(vecty.Markup(vecty.Attribute("k-num", "222"), vecty.Class("table")), t.Markup, t.header, t.body, t.Slot)
+	return nil
 }
 
 type TBodyComponent struct {

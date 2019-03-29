@@ -36,7 +36,7 @@ func (pv *MainView) Render() vecty.ComponentOrHTML {
 	t1 := &TableComponent{
 		Markup: vecty.Markup(Css("is-fullwidth")),
 		Header: [][]string{{"a1", "Position"}, {"a2", "Played"}, {"Team"}},
-		Body:   []map[string]interface{}{{"a1": 1, "a2": 21, "a3": 32}, {"a1": 2, "a2": 22, "a3": 31}, {"a1": 3, "a2": 23, "a3": 38}},
+		Body:   []map[string]interface{}{{"a1": 1, "a2": 201, "a3": 32}, {"a1": 12, "a2": 22, "a3": 31}, {"a1": 3, "a2": 23, "a3": 38}},
 	}
 	t1.HandleHeader(func(c []string) vecty.ComponentOrHTML {
 		_t := ""
@@ -223,22 +223,3 @@ func (pv *MainView) Render() vecty.ComponentOrHTML {
 		}), vecty.Class(vars.IsInfo, "button")), vecty.Text("测试")),
 	)
 }
-
-/*
-TBody(TR(Css())(
-				Th(Text("1")),
-				Td(Text("2")),
-				Td(Text("3")),
-			), TR(Css(vars.IsSelected))(
-				Th(Text("1")),
-				Td(Text("2")),
-				Td(Text("3")),
-			), TR(Css())(
-				Th(Text("1")),
-				Td(Text("2")),
-				Td(A(Css(),
-					attrs.Href("https://en.wikipedia.org/wiki/Manchester_United_F.C."),
-					attrs.Title("Manchester United F.C."),
-				)(Text("test"))),
-			))
- */

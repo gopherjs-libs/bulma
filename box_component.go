@@ -13,6 +13,5 @@ type BoxComponent struct {
 }
 
 func (t *BoxComponent) Render() vecty.ComponentOrHTML {
-	vecty.If()
 	return elem.Div(vecty.Markup(vecty.Class("box")), t.Markup, t.Slot)
 }
